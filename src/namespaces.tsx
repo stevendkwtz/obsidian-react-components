@@ -1,4 +1,4 @@
-import { CodeBlockSymbol, NamespaceNameSymbol } from './constants';
+import {CodeBlockSymbol, NamespaceNameSymbol} from './constants';
 import ReactComponentsPlugin from './main';
 
 export type NamespaceObject = {

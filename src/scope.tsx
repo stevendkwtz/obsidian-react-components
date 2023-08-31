@@ -1,13 +1,13 @@
-import { Markdown } from './components/Markdown';
-import { getNoteHeaderComponent } from './header';
+import {Markdown} from './components/Markdown';
+import {getNoteHeaderComponent} from './header';
 import ReactComponentsPlugin from './main';
 import * as obsidian from 'obsidian';
-import { getNamespaceObject, NamespaceObject } from './namespaces';
-import { CodeBlockSymbol, GLOBAL_NAMESPACE, NamespaceNameSymbol } from './constants';
+import {getNamespaceObject, NamespaceObject} from './namespaces';
+import {CodeBlockSymbol, GLOBAL_NAMESPACE, NamespaceNameSymbol} from './constants';
 import isVarName from 'is-var-name';
-import { evalAdapter } from './codeEvaluation';
-import { transpileCode } from './codeTranspliation';
-import { ErrorComponent } from './components/ErrorComponent';
+import {evalAdapter} from './codeEvaluation';
+import {transpileCode} from './codeTranspliation';
+import {ErrorComponent} from './components/ErrorComponent';
 
 export async function refreshComponentScope() {
     const refreshNamespaceObject = async (namespaceObject: NamespaceObject) => {
@@ -22,7 +22,7 @@ export async function refreshComponentScope() {
                         namespaceObject[NamespaceNameSymbol]
                     );
                 } catch (e) {
-                    namespaceObject[name] = () => ErrorComponent({ componentName: name, error: e });
+                    namespaceObject[name] = () => ErrorComponent({componentName: name, error: e});
                 }
             } else {
                 await refreshNamespaceObject(value);
@@ -35,7 +35,7 @@ export async function refreshComponentScope() {
 export function getScope(namespace: string) {
     const React = ReactComponentsPlugin.instance.React;
     const ReactDOM = ReactComponentsPlugin.instance.ReactDOM;
-    const { useState, useEffect, useContext, useCallback, useMemo, useReducer, useRef } = React;
+    const {useState, useEffect, useContext, useCallback, useMemo, useReducer, useRef} = React;
     const useIsPreview = () => {
         const ctx = useContext(ReactComponentsPlugin.instance.ReactComponentContext);
         return (

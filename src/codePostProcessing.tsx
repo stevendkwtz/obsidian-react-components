@@ -1,4 +1,4 @@
-import { getScopeExpression } from './scope';
+import {getScopeExpression} from './scope';
 
 export function wrapCode(content: string, namespace: string) {
     const importsRegexp = /^\s*import\s(.|\s)*?\sfrom\s.*?$/gm;

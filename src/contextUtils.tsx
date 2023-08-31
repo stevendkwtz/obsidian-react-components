@@ -1,4 +1,4 @@
-import { MarkdownPostProcessorContext } from 'obsidian';
+import {MarkdownPostProcessorContext} from 'obsidian';
 import ReactComponentsPlugin from './main';
 
 export function getDocumentAssociatedWithElement(el: HTMLElement) {

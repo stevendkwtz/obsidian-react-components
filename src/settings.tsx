@@ -1,5 +1,5 @@
-import { PluginSettingTab, Setting } from 'obsidian';
-import { patchSanitization, unpatchSanitization } from './htmlRendering';
+import {PluginSettingTab, Setting} from 'obsidian';
+import {patchSanitization, unpatchSanitization} from './htmlRendering';
 import ReactComponentsPlugin from './main';
 
 export const DEFAULT_SETTINGS: ReactComponentsSettings = {
@@ -27,11 +27,11 @@ export class ReactComponentsSettingTab extends PluginSettingTab {
     }
 
     display(): void {
-        const { containerEl } = this;
+        const {containerEl} = this;
 
         containerEl.empty();
 
-        containerEl.createEl('h2', { text: 'React Components Settings' });
+        containerEl.createEl('h2', {text: 'React Components Settings'});
 
         new Setting(containerEl)
             .setName('Live Preview Support')

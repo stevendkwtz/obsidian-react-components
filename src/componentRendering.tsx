@@ -1,17 +1,17 @@
-import { MarkdownPostProcessorContext, TFile } from 'obsidian';
+import {MarkdownPostProcessorContext, TFile} from 'obsidian';
 import OfflineReact from 'react';
-import { wrapInNoteCode } from './codePostProcessing';
-import { transpileCode } from './codeTranspliation';
-import { ErrorComponent } from './components/ErrorComponent';
-import { ObsidianContextProvider } from './components/ObsidianContextProvider';
-import { RootComponent } from './components/RootComponent';
-import { GLOBAL_NAMESPACE } from './constants';
-import { getMarkdownPostProcessorContextAssociatedWithElement } from './contextUtils';
-import { getPropertyValue } from './fileUtils';
-import { patchSanitization } from './htmlRendering';
-import { getLivePostprocessor } from './livePreview';
+import {wrapInNoteCode} from './codePostProcessing';
+import {transpileCode} from './codeTranspliation';
+import {ErrorComponent} from './components/ErrorComponent';
+import {ObsidianContextProvider} from './components/ObsidianContextProvider';
+import {RootComponent} from './components/RootComponent';
+import {GLOBAL_NAMESPACE} from './constants';
+import {getMarkdownPostProcessorContextAssociatedWithElement} from './contextUtils';
+import {getPropertyValue} from './fileUtils';
+import {patchSanitization} from './htmlRendering';
+import {getLivePostprocessor} from './livePreview';
 import ReactComponentsPlugin from './main';
-import { generateRandomDomId } from './randomIdGeneration';
+import {generateRandomDomId} from './randomIdGeneration';
 
 export async function setupComponentRendering() {
     const plugin = ReactComponentsPlugin.instance;
@@ -32,9 +32,9 @@ export async function setupComponentRendering() {
         }
     });
 
-    plugin.mutationObserver.observe(document, { subtree: true, childList: true });
+    plugin.mutationObserver.observe(document, {subtree: true, childList: true});
 
-    plugin.ReactDOM.render(<RootComponent />, plugin.reactRoot);
+    plugin.ReactDOM.render(<RootComponent/>, plugin.reactRoot);
 
     if (plugin.settings.patch_html_rendering) {
         patchSanitization();
@@ -84,23 +84,25 @@ export async function attachComponent(source: string, el: HTMLElement, ctx?: Mar
     if (!ctx) {
         ctx = getMarkdownPostProcessorContextAssociatedWithElement(el);
     }
+
     class ErrorBoundary extends React.Component<any, { hasError: boolean; error: Error }> {
         constructor(props) {
             super(props);
-            this.state = { hasError: false, error: null };
+            this.state = {hasError: false, error: null};
         }
 
         static getDerivedStateFromError(error) {
-            return { hasError: true, error };
+            return {hasError: true, error};
         }
 
         render() {
             if (this.state.hasError) {
-                return <ErrorComponent componentName={source} error={this.state.error} />;
+                return <ErrorComponent componentName={source} error={this.state.error}/>;
             }
             return this.props.children;
         }
     }
+
     const container = document.createElement('span');
     el.replaceChildren(container);
     ReactComponentsPlugin.instance.addComponentToRender(
@@ -120,7 +122,7 @@ export async function attachComponent(source: string, el: HTMLElement, ctx?: Mar
                 />
             </ErrorBoundary>
         ),
-        { parent: el, child: container }
+        {parent: el, child: container}
     );
 }
 

@@ -1,4 +1,4 @@
-import { MarkdownPostProcessorContext } from 'obsidian';
+import {MarkdownPostProcessorContext} from 'obsidian';
 
 export type ReactComponentContextData = {
     markdownPostProcessorContext: MarkdownPostProcessorContext;

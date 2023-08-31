@@ -1,7 +1,7 @@
-import { transpileCode } from './codeTranspliation';
-import { ErrorComponent } from './components/ErrorComponent';
-import { getScope } from './scope';
-import { importFromUrl } from './urlImport';
+import {transpileCode} from './codeTranspliation';
+import {ErrorComponent} from './components/ErrorComponent';
+import {getScope} from './scope';
+import {importFromUrl} from './urlImport';
 
 // evaluated code inherits the scope of the current function
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -12,7 +12,7 @@ export async function evalAdapter(code: string, namespace: string) {
     try {
         evaluated = (await importFromUrl(encodedCode)).default(scope, transpileCode);
     } catch (e) {
-        return ErrorComponent({ componentName: 'evaluated code', error: e });
+        return ErrorComponent({componentName: 'evaluated code', error: e});
     }
 
     if (typeof evaluated == 'function') {
@@ -20,7 +20,7 @@ export async function evalAdapter(code: string, namespace: string) {
             try {
                 return evaluated(...args);
             } catch (e) {
-                return ErrorComponent({ componentName: 'evaluated code', error: e });
+                return ErrorComponent({componentName: 'evaluated code', error: e});
             }
         };
     } else {

@@ -1,17 +1,17 @@
-import { normalizePath, Notice, TFile } from 'obsidian';
-import { CodeBlockSymbol, GLOBAL_NAMESPACE } from './constants';
-import { getPropertyValue } from './fileUtils';
+import {normalizePath, Notice, TFile} from 'obsidian';
+import {CodeBlockSymbol, GLOBAL_NAMESPACE} from './constants';
+import {getPropertyValue} from './fileUtils';
 import ReactComponentsPlugin from './main';
-import { getMatches } from './regex_utils';
+import {getMatches} from './regex_utils';
 import isVarName from 'is-var-name';
-import { getNamespaceObject } from './namespaces';
-import { evalAdapter } from './codeEvaluation';
-import { transpileCode } from './codeTranspliation';
-import { ErrorComponent } from './components/ErrorComponent';
-import { getNoteHeaderComponent, setNoteHeaderComponent } from './header';
-import { removeFrontMatter, wrapCode } from './codePostProcessing';
-import { refreshComponentScope } from './scope';
-import { requestComponentUpdate } from './componentRendering';
+import {getNamespaceObject} from './namespaces';
+import {evalAdapter} from './codeEvaluation';
+import {transpileCode} from './codeTranspliation';
+import {ErrorComponent} from './components/ErrorComponent';
+import {getNoteHeaderComponent, setNoteHeaderComponent} from './header';
+import {removeFrontMatter, wrapCode} from './codePostProcessing';
+import {refreshComponentScope} from './scope';
+import {requestComponentUpdate} from './componentRendering';
 
 export async function registerComponent(
     content: string,
@@ -37,7 +37,7 @@ export async function registerComponent(
             componentNamespace
         );
     } catch (e) {
-        namespaceObject[componentName] = () => ErrorComponent({ componentName, error: e });
+        namespaceObject[componentName] = () => ErrorComponent({componentName, error: e});
     }
 }
 

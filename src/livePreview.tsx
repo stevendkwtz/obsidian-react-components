@@ -1,24 +1,28 @@
-import { syntaxTree } from '@codemirror/language';
-import { RangeSetBuilder } from '@codemirror/rangeset';
-import { tokenClassNodeProp } from '@codemirror/stream-parser';
-import { Decoration, DecorationSet, EditorView, ViewPlugin, ViewUpdate, WidgetType } from '@codemirror/view';
-import { FileView, MarkdownPostProcessorContext } from 'obsidian';
-import { attachComponent } from './componentRendering';
+import {syntaxTree} from '@codemirror/language';
+import {RangeSetBuilder} from '@codemirror/rangeset';
+import {tokenClassNodeProp} from '@codemirror/stream-parser';
+import {Decoration, DecorationSet, EditorView, ViewPlugin, ViewUpdate, WidgetType} from '@codemirror/view';
+import {FileView, MarkdownPostProcessorContext} from 'obsidian';
+import {attachComponent} from './componentRendering';
 
 export function getLivePostprocessor() {
     class JsxWidget extends WidgetType {
         constructor(public el: HTMLElement, public code: string) {
             super();
         }
+
         toDOM(): HTMLElement {
             return this.el;
         }
+
         eq(other: JsxWidget) {
             return other.code === this.code;
         }
+
         ignoreEvent() {
             return false;
         }
+
         destroy(): void {
             return;
         }
@@ -28,10 +32,12 @@ export function getLivePostprocessor() {
         decorations: DecorationSet;
         selectedDecorations: Set<Decoration>;
         view: EditorView;
+
         constructor(view: EditorView) {
             this.view = view;
             this.build(view);
         }
+
         update(update: ViewUpdate) {
             this.view = update.view;
             if (update.docChanged || update.viewportChanged) {
@@ -39,9 +45,11 @@ export function getLivePostprocessor() {
                 this.build(update.view);
             }
         }
+
         destroy(): void {
             return void 0;
         }
+
         build(view: EditorView) {
             try {
                 const builder = new RangeSetBuilder<Decoration>();
@@ -64,7 +72,7 @@ export function getLivePostprocessor() {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const leaf: FileView = Object.keys((view.state as any).config.address)
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    .map(x => (view.state as any).field({ id: x }))
+                    .map(x => (view.state as any).field({id: x}))
                     .filter(x => x?.file)[0];
                 const ctx: MarkdownPostProcessorContext = {
                     docId: null,
@@ -76,7 +84,7 @@ export function getLivePostprocessor() {
 
                 let codeblockStart: { from: number; to: number; strippedCodeblockHeader: string };
 
-                for (const { from, to } of view.visibleRanges) {
+                for (const {from, to} of view.visibleRanges) {
                     view.state.selection.ranges.map(r => r.from);
                     syntaxTree(view.state).iterate({
                         from,
@@ -99,7 +107,7 @@ export function getLivePostprocessor() {
                                     strippedCodeblockHeader.startsWith('jsx-') ||
                                     strippedCodeblockHeader == 'jsx'
                                 ) {
-                                    codeblockStart = { from, to, strippedCodeblockHeader };
+                                    codeblockStart = {from, to, strippedCodeblockHeader};
                                 }
                                 return;
                             }

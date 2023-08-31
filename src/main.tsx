@@ -1,19 +1,19 @@
-import { MarkdownPostProcessorContext, normalizePath, Plugin, TFile } from 'obsidian';
+import {MarkdownPostProcessorContext, normalizePath, Plugin, TFile} from 'obsidian';
 import OfflineReact from 'react';
 import OfflineReactDOM from 'react-dom';
-import { DEFAULT_SETTINGS, ReactComponentsSettings, ReactComponentsSettingTab } from './settings';
-import { ParentAndChild } from './parentAndChild';
-import { registerCodeProcessor } from './preview';
-import { registerHeaderProcessor } from './header';
-import { refreshPanes } from './workspace_utils';
-import { unpatchSanitization } from './htmlRendering';
-import { awaitFilesLoaded, getPropertyValue } from './fileUtils';
-import { clearComponentNamespace, NamespaceObject } from './namespaces';
-import { importFromUrl } from './urlImport';
-import { registerComponents } from './componentRegistry';
-import { requestComponentUpdate, setupComponentRendering, unloadComponentRendering } from './componentRendering';
-import { refreshComponentScope } from './scope';
-import { ReactComponentContextData } from './reactComponentContext';
+import {DEFAULT_SETTINGS, ReactComponentsSettings, ReactComponentsSettingTab} from './settings';
+import {ParentAndChild} from './parentAndChild';
+import {registerCodeProcessor} from './preview';
+import {registerHeaderProcessor} from './header';
+import {refreshPanes} from './workspace_utils';
+import {unpatchSanitization} from './htmlRendering';
+import {awaitFilesLoaded, getPropertyValue} from './fileUtils';
+import {clearComponentNamespace, NamespaceObject} from './namespaces';
+import {importFromUrl} from './urlImport';
+import {registerComponents} from './componentRegistry';
+import {requestComponentUpdate, setupComponentRendering, unloadComponentRendering} from './componentRendering';
+import {refreshComponentScope} from './scope';
+import {ReactComponentContextData} from './reactComponentContext';
 
 export default class ReactComponentsPlugin extends Plugin {
     static instance: ReactComponentsPlugin = null;
@@ -61,7 +61,8 @@ export default class ReactComponentsPlugin extends Plugin {
             }
             await refreshComponentScope();
             await requestComponentUpdate();
-        } catch (e) {}
+        } catch (e) {
+        }
     }
 
     async onload() {
@@ -77,7 +78,7 @@ export default class ReactComponentsPlugin extends Plugin {
             if (
                 file instanceof TFile &&
                 ((this.settings.template_folder != '' &&
-                    file.parent.path.startsWith(normalizePath(this.settings.template_folder))) ||
+                        file.parent.path.startsWith(normalizePath(this.settings.template_folder))) ||
                     this.settings.all_files_define_components ||
                     getPropertyValue('defines-react-components', file))
             ) {

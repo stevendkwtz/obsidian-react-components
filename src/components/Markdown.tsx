@@ -1,10 +1,10 @@
-import { MarkdownRenderer, TFile } from 'obsidian';
+import {MarkdownRenderer, TFile} from 'obsidian';
 import ReactComponentsPlugin from 'src/main';
 
-export const Markdown = ({ src, maxDepth = 10 }: { src: string; maxDepth: number }) => {
+export const Markdown = ({src, maxDepth = 10}: { src: string; maxDepth: number }) => {
     const plugin = ReactComponentsPlugin.instance;
     const React = plugin.React;
-    const { useContext, useRef, useEffect } = React;
+    const {useContext, useRef, useEffect} = React;
     const ctx = useContext(plugin.ReactComponentContext);
     const containerRef = useRef<HTMLElement>();
     useEffect(() => {
@@ -37,7 +37,7 @@ export const Markdown = ({ src, maxDepth = 10 }: { src: string; maxDepth: number
                             el.addClasses(['is-loaded']);
                             break;
                         default:
-                            el.createEl('img', { attr: { src: plugin.app.vault.getResourcePath(target) } }, img => {
+                            el.createEl('img', {attr: {src: plugin.app.vault.getResourcePath(target)}}, img => {
                                 if (el.hasAttribute('width')) img.setAttribute('width', el.getAttribute('width'));
                                 if (el.hasAttribute('alt')) img.setAttribute('alt', el.getAttribute('alt'));
                             });

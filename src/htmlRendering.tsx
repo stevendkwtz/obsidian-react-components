@@ -1,5 +1,5 @@
-import { transpileCode } from './codeTranspliation';
-import { attachOnDomElLoaded } from './componentRendering';
+import {transpileCode} from './codeTranspliation';
+import {attachOnDomElLoaded} from './componentRendering';
 
 let oldDomPurifySanitize = null;
 
@@ -7,7 +7,7 @@ export function patchSanitization() {
     oldDomPurifySanitize = (global as any).DOMPurify.sanitize;
 
     (global as any).DOMPurify.sanitize = (html, config) => {
-        const pureHtml = oldDomPurifySanitize(html, { ...config, RETURN_DOM_FRAGMENT: false });
+        const pureHtml = oldDomPurifySanitize(html, {...config, RETURN_DOM_FRAGMENT: false});
         const isPureHtml = new DOMParser().parseFromString(html, 'text/xml').documentElement.outerHTML == pureHtml;
 
         const container = document.createElement('span');

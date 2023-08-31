@@ -1,4 +1,4 @@
-import { attachComponent } from './componentRendering';
+import {attachComponent} from './componentRendering';
 import ReactComponentsPlugin from './main';
 
 let noteHeaderComponent = any => {

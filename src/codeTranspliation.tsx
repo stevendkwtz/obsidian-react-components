@@ -1,4 +1,5 @@
 import Babel from '@babel/standalone';
+
 export function transpileCode(content: string) {
     return Babel.transform(content, {
         presets: [

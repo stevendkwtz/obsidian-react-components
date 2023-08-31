@@ -1,4 +1,4 @@
-import { normalizePath, TAbstractFile, TFile, TFolder, Vault } from 'obsidian';
+import {normalizePath, TAbstractFile, TFile, TFolder, Vault} from 'obsidian';
 import ReactComponentsPlugin from './main';
 
 export function getTFilesFromFolder(plugin: ReactComponentsPlugin, folder_str: string): Array<TFile> {
@@ -45,7 +45,8 @@ export function getPropertyValue(propertyName: string, file: TFile) {
             const cache = app.metadataCache.getFileCache(file);
             return cache?.frontmatter?.[propertyName];
         }
-    } catch (e) {}
+    } catch (e) {
+    }
 }
 
 export async function awaitFilesLoaded() {
