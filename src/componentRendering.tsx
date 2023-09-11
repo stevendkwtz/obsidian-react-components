@@ -8,7 +8,6 @@ import {RootComponent} from './components/RootComponent';
 import {GLOBAL_NAMESPACE} from './constants';
 import {getMarkdownPostProcessorContextAssociatedWithElement} from './contextUtils';
 import {getPropertyValue} from './fileUtils';
-import {patchSanitization} from './htmlRendering';
 import {getLivePostprocessor} from './livePreview';
 import ReactComponentsPlugin from './main';
 import {generateRandomDomId} from './randomIdGeneration';
@@ -36,9 +35,6 @@ export async function setupComponentRendering() {
 
     plugin.ReactDOM.render(<RootComponent/>, plugin.reactRoot);
 
-    if (plugin.settings.patch_html_rendering) {
-        patchSanitization();
-    }
     try {
         if (plugin.settings.live_preview) {
             plugin.registerMarkdownCodeBlockProcessor('jsx', async (source, el, ctx) => {
@@ -77,10 +73,6 @@ export async function unloadComponentRendering() {
 
 export async function attachComponent(source: string, el: HTMLElement, ctx?: MarkdownPostProcessorContext) {
     const React = ReactComponentsPlugin.instance.React;
-    if (!el.isConnected) {
-        console.error('HTML Element must be attached to the dom before react can attach.');
-        return;
-    }
     if (!ctx) {
         ctx = getMarkdownPostProcessorContextAssociatedWithElement(el);
     }
@@ -102,8 +94,8 @@ export async function attachComponent(source: string, el: HTMLElement, ctx?: Mar
             return this.props.children;
         }
     }
-
     const container = document.createElement('span');
+    container.addClass('react-component')
     el.replaceChildren(container);
     ReactComponentsPlugin.instance.addComponentToRender(
         () => (

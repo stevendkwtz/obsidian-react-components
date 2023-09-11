@@ -25,6 +25,7 @@ export function registerCodeProcessor() {
         }
         toReplace.forEach(({codeblock, source}) => {
             const container = document.createElement('span');
+            container.addClass('react-component')
             codeblock.replaceWith(container);
             attachComponent(source, container, ctx);
         });

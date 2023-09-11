@@ -9,9 +9,8 @@ export function patchSanitization() {
     (global as any).DOMPurify.sanitize = (html, config) => {
         const pureHtml = oldDomPurifySanitize(html, {...config, RETURN_DOM_FRAGMENT: false});
         const isPureHtml = new DOMParser().parseFromString(html, 'text/xml').documentElement.outerHTML == pureHtml;
-
         const container = document.createElement('span');
-
+        container.addClass('react-component')
         const isValidReactCode = (() => {
             try {
                 transpileCode(html);
@@ -21,7 +20,7 @@ export function patchSanitization() {
             }
         })();
 
-        if (!isPureHtml && isValidReactCode) {
+        if (html && !isPureHtml && isValidReactCode) {
             attachOnDomElLoaded(html, container);
             return container;
         } else {

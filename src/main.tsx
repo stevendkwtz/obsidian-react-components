@@ -5,7 +5,6 @@ import {DEFAULT_SETTINGS, ReactComponentsSettings, ReactComponentsSettingTab} fr
 import {ParentAndChild} from './parentAndChild';
 import {registerCodeProcessor} from './preview';
 import {registerHeaderProcessor} from './header';
-import {refreshPanes} from './workspace_utils';
 import {unpatchSanitization} from './htmlRendering';
 import {awaitFilesLoaded, getPropertyValue} from './fileUtils';
 import {clearComponentNamespace, NamespaceObject} from './namespaces';
@@ -117,7 +116,6 @@ export default class ReactComponentsPlugin extends Plugin {
         this.addSettingTab(new ReactComponentsSettingTab(this));
         registerCodeProcessor();
         registerHeaderProcessor();
-        this.app.workspace.onLayoutReady(async () => refreshPanes());
     }
 
     unload() {

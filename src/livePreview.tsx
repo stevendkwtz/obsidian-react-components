@@ -55,6 +55,7 @@ export function getLivePostprocessor() {
                 const builder = new RangeSetBuilder<Decoration>();
                 const createJsxDecoration = (code, from, to, isBlock = false) => {
                     const el = document.createElement('span');
+                    el.addClass('react-component')
                     attachComponent(code, el, ctx);
 
                     const deco = Decoration.widget({
@@ -143,7 +144,6 @@ export function getLivePostprocessor() {
                 }
                 this.decorations = builder.finish();
             } catch (e) {
-                debugger;
             }
         }
     }
