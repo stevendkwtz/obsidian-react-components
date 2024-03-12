@@ -9,9 +9,9 @@ export function transpileCode(content: string) {
                 {
                     onlyRemoveTypeImports: true,
                     allExtensions: true,
-                    isTSX: true
-                }
-            ]
-        ]
+                    isTSX: true,
+                },
+            ],
+        ],
     }).code;
 }

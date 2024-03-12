@@ -1,9 +1,9 @@
-import {syntaxTree, tokenClassNodeProp} from "@codemirror/language";
-import {RangeSetBuilder} from "@codemirror/state";
+import { syntaxTree, tokenClassNodeProp } from '@codemirror/language';
+import { RangeSetBuilder } from '@codemirror/state';
 
-import {Decoration, DecorationSet, EditorView, ViewPlugin, ViewUpdate, WidgetType} from '@codemirror/view';
-import {FileView, MarkdownPostProcessorContext} from 'obsidian';
-import {attachComponent} from './componentRendering';
+import { Decoration, DecorationSet, EditorView, ViewPlugin, ViewUpdate, WidgetType } from '@codemirror/view';
+import { FileView, MarkdownPostProcessorContext } from 'obsidian';
+import { attachComponent } from './componentRendering';
 
 export function getLivePostprocessor() {
     class JsxWidget extends WidgetType {
@@ -55,14 +55,14 @@ export function getLivePostprocessor() {
                 const builder = new RangeSetBuilder<Decoration>();
                 const createJsxDecoration = (code, from, to, isBlock = false) => {
                     const el = document.createElement('span');
-                    el.addClass('react-component')
+                    el.addClass('react-component');
                     attachComponent(code, el, ctx);
 
                     const deco = Decoration.widget({
                         widget: new JsxWidget(el, code),
                         block: false, //isBlock // can't register block decorations with plugins :(
                         from,
-                        to
+                        to,
                     });
 
                     if (!isBlock) {
@@ -73,20 +73,20 @@ export function getLivePostprocessor() {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const leaf: FileView = Object.keys((view.state as any).config.address)
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    .map(x => (view.state as any).field({id: x}))
-                    .filter(x => x?.file)[0];
+                    .map((x) => (view.state as any).field({ id: x }))
+                    .filter((x) => x?.file)[0];
                 const ctx: MarkdownPostProcessorContext = {
                     docId: null,
                     sourcePath: leaf?.file?.path || '',
                     frontmatter: null,
                     addChild: null,
-                    getSectionInfo: null
+                    getSectionInfo: null,
                 };
 
                 let codeblockStart: { from: number; to: number; strippedCodeblockHeader: string };
 
-                for (const {from, to} of view.visibleRanges) {
-                    view.state.selection.ranges.map(r => r.from);
+                for (const { from, to } of view.visibleRanges) {
+                    view.state.selection.ranges.map((r) => r.from);
                     syntaxTree(view.state).iterate({
                         from,
                         to,
@@ -96,8 +96,8 @@ export function getLivePostprocessor() {
                             const propNames = new Set(
                                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                 Object.values((node.type as any).props || {})
-                                    .filter(x => typeof x === 'string')
-                                    .flatMap((x: string) => x.split(' '))
+                                    .filter((x) => typeof x === 'string')
+                                    .flatMap((x: string) => x.split(' ')),
                             );
                             if (propNames.has('HyperMD-codeblock-begin')) {
                                 const codeblockHeader = view.state.doc.sliceString(node.from, node.to);
@@ -108,7 +108,7 @@ export function getLivePostprocessor() {
                                     strippedCodeblockHeader.startsWith('jsx-') ||
                                     strippedCodeblockHeader == 'jsx'
                                 ) {
-                                    codeblockStart = {from, to, strippedCodeblockHeader};
+                                    codeblockStart = { from, to, strippedCodeblockHeader };
                                 }
                                 return;
                             }
@@ -139,22 +139,25 @@ export function getLivePostprocessor() {
                             const [, code] = line.match(/^jsx:\s?(.+)/) ?? [];
                             if (!code?.trim().length) return;
                             createJsxDecoration(code, from, to);
-                        }
+                        },
                     });
                 }
                 this.decorations = builder.finish();
             } catch (e) {
+                // eslint-disable-next-line no-console
+                console.log('obsidian-react-components: Error in livePreview. See error below.');
+                console.error(e);
             }
         }
     }
 
     return ViewPlugin.fromClass(LivePlugin, {
-        decorations: v => {
+        decorations: (v) => {
             return v.decorations.update({
                 filter: (from, to) =>
                     from == to ||
-                    !v.view.state.selection.ranges.filter(r => (r.from < from ? r.to > from : r.from < to)).length
+                    !v.view.state.selection.ranges.filter((r) => (r.from < from ? r.to > from : r.from < to)).length,
             });
-        }
+        },
     });
 }

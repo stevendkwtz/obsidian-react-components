@@ -1,13 +1,13 @@
-import {Markdown} from './components/Markdown';
-import {getNoteHeaderComponent} from './header';
-import ReactComponentsPlugin from './main';
 import * as obsidian from 'obsidian';
-import {getNamespaceObject, NamespaceObject} from './namespaces';
-import {CodeBlockSymbol, GLOBAL_NAMESPACE, NamespaceNameSymbol} from './constants';
 import isVarName from 'is-var-name';
-import {evalAdapter} from './codeEvaluation';
-import {transpileCode} from './codeTranspliation';
-import {ErrorComponent} from './components/ErrorComponent';
+import { Markdown } from './components/Markdown';
+import { getNoteHeaderComponent } from './header';
+import ReactComponentsPlugin from './main';
+import { NamespaceObject, getNamespaceObject } from './namespaces';
+import { CodeBlockSymbol, GLOBAL_NAMESPACE, NamespaceNameSymbol } from './constants';
+import { evalAdapter } from './codeEvaluation';
+import { transpileCode } from './codeTranspliation';
+import { ErrorComponent } from './components/ErrorComponent';
 
 export async function refreshComponentScope() {
     const refreshNamespaceObject = async (namespaceObject: NamespaceObject) => {
@@ -19,10 +19,10 @@ export async function refreshComponentScope() {
                 try {
                     namespaceObject[name] = await evalAdapter(
                         transpileCode(codef()),
-                        namespaceObject[NamespaceNameSymbol]
+                        namespaceObject[NamespaceNameSymbol],
                     );
                 } catch (e) {
-                    namespaceObject[name] = () => ErrorComponent({componentName: name, error: e});
+                    namespaceObject[name] = () => ErrorComponent({ componentName: name, error: e });
                 }
             } else {
                 await refreshNamespaceObject(value);
@@ -35,7 +35,7 @@ export async function refreshComponentScope() {
 export function getScope(namespace: string) {
     const React = ReactComponentsPlugin.instance.React;
     const ReactDOM = ReactComponentsPlugin.instance.ReactDOM;
-    const {useState, useEffect, useContext, useCallback, useMemo, useReducer, useRef} = React;
+    const { useState, useEffect, useContext, useCallback, useMemo, useReducer, useRef } = React;
     const useIsPreview = () => {
         const ctx = useContext(ReactComponentsPlugin.instance.ReactComponentContext);
         return (
@@ -59,7 +59,7 @@ export function getScope(namespace: string) {
         useReducer,
         useRef,
         useIsPreview,
-        obsidian
+        obsidian,
     };
 
     // Prevent stale component references
@@ -70,7 +70,7 @@ export function getScope(namespace: string) {
                 get: function () {
                     return namespaceObject[componentName];
                 },
-                enumerable: true
+                enumerable: true,
             });
         }
     };
@@ -87,7 +87,7 @@ export function getScopeExpression(namespace: string) {
     return (
         Object.keys(scope)
             .sort()
-            .map(k => `let ${k}=scope.${k};`)
+            .map((k) => `let ${k}=scope.${k};`)
             .join('\n') + '\n'
     );
 }

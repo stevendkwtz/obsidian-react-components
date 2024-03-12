@@ -1,4 +1,4 @@
-import {normalizePath, TAbstractFile, TFile, TFolder, Vault} from 'obsidian';
+import { TAbstractFile, TFile, TFolder, Vault, normalizePath } from 'obsidian';
 import ReactComponentsPlugin from './main';
 
 export function getTFilesFromFolder(plugin: ReactComponentsPlugin, folder_str: string): Array<TFile> {
@@ -46,6 +46,9 @@ export function getPropertyValue(propertyName: string, file: TFile) {
             return cache?.frontmatter?.[propertyName];
         }
     } catch (e) {
+        // eslint-disable-next-line no-console
+        console.log('obsidian-react-components: Error in fileUtils. See error below.');
+        console.error(e);
     }
 }
 
@@ -54,6 +57,6 @@ export async function awaitFilesLoaded() {
     let len: number;
     do {
         len = app.vault.getAllLoadedFiles().length;
-        await new Promise(r => setTimeout(r, 500));
+        await new Promise((r) => setTimeout(r, 500));
     } while (len != app.vault.getAllLoadedFiles().length);
 }

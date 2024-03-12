@@ -1,4 +1,4 @@
-import {CodeBlockSymbol, NamespaceNameSymbol} from './constants';
+import { CodeBlockSymbol, NamespaceNameSymbol } from './constants';
 import ReactComponentsPlugin from './main';
 
 export type NamespaceObject = {
@@ -12,7 +12,7 @@ export function getNamespaceObject(namespace: string): NamespaceObject {
     namespace
         .trim()
         .split('.')
-        .forEach(c => {
+        .forEach((c) => {
             let next = namespaceObject?.[c.trim()];
             if (typeof next == 'function') {
                 namespaceObject = null;

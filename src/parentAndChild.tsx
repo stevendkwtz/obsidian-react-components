@@ -3,9 +3,9 @@ export type WeakParentAndChild = { parent: WeakRef<HTMLElement>; child: WeakRef<
 
 export const asWeak = (parentAndChild: ParentAndChild) => ({
     parent: new WeakRef(parentAndChild.parent),
-    child: new WeakRef(parentAndChild.child)
+    child: new WeakRef(parentAndChild.child),
 });
 export const asStrong = (parentAndChild: WeakParentAndChild) => ({
     parent: parentAndChild.parent.deref(),
-    child: parentAndChild.child.deref()
+    child: parentAndChild.child.deref(),
 });

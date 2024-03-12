@@ -1,4 +1,4 @@
-import {attachComponent} from './componentRendering';
+import { attachComponent } from './componentRendering';
 import ReactComponentsPlugin from './main';
 
 export function registerCodeProcessor() {
@@ -10,22 +10,22 @@ export function registerCodeProcessor() {
             const codeblock = codeblocks.item(index);
             if (codeblock.className == 'language-jsx:' || codeblock.className == 'language-jsx-') {
                 const source = codeblock.innerText;
-                toReplace.push({codeblock: codeblock.parentNode, source});
+                toReplace.push({ codeblock: codeblock.parentNode, source });
             } else if (codeblock.className.startsWith('language-jsx::')) {
                 const componentName = codeblock.className.substr('language-jsx::'.length).trim();
                 const source = `<${componentName} src={${JSON.stringify(codeblock.innerText)}}/>`;
-                toReplace.push({codeblock: codeblock.parentNode, source});
+                toReplace.push({ codeblock: codeblock.parentNode, source });
             } else {
                 const text = codeblock.innerText.trim();
                 if (text.startsWith('jsx-') || text.startsWith('jsx:')) {
                     const source = text.substring('jsx-'.length).trim();
-                    toReplace.push({codeblock, source});
+                    toReplace.push({ codeblock, source });
                 }
             }
         }
-        toReplace.forEach(({codeblock, source}) => {
+        toReplace.forEach(({ codeblock, source }) => {
             const container = document.createElement('span');
-            container.addClass('react-component')
+            container.addClass('react-component');
             codeblock.replaceWith(container);
             attachComponent(source, container, ctx);
         });

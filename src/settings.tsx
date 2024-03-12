@@ -1,5 +1,5 @@
-import {PluginSettingTab, Setting} from 'obsidian';
-import {patchSanitization, unpatchSanitization} from './htmlRendering';
+import { PluginSettingTab, Setting } from 'obsidian';
+import { patchSanitization, unpatchSanitization } from './htmlRendering';
 import ReactComponentsPlugin from './main';
 
 export const DEFAULT_SETTINGS: ReactComponentsSettings = {
@@ -7,7 +7,7 @@ export const DEFAULT_SETTINGS: ReactComponentsSettings = {
     auto_refresh: true,
     live_preview: true,
     patch_html_rendering: true,
-    all_files_define_components: false
+    all_files_define_components: false,
 };
 
 export interface ReactComponentsSettings {
@@ -27,17 +27,17 @@ export class ReactComponentsSettingTab extends PluginSettingTab {
     }
 
     display(): void {
-        const {containerEl} = this;
+        const { containerEl } = this;
 
         containerEl.empty();
 
-        containerEl.createEl('h2', {text: 'React Components Settings'});
+        containerEl.createEl('h2', { text: 'React Components Settings' });
 
         new Setting(containerEl)
             .setName('Live Preview Support')
             .setDesc('Experimental. Change requires restart to take effect.')
-            .addToggle(toggle => {
-                toggle.setValue(this.plugin.settings.live_preview).onChange(live_preview => {
+            .addToggle((toggle) => {
+                toggle.setValue(this.plugin.settings.live_preview).onChange((live_preview) => {
                     this.plugin.settings.live_preview = live_preview;
                     this.plugin.saveSettings();
                 });
@@ -46,8 +46,8 @@ export class ReactComponentsSettingTab extends PluginSettingTab {
         new Setting(containerEl)
             .setName('Replace HTML Rendering')
             .setDesc('Render inline html as jsx.')
-            .addToggle(toggle => {
-                toggle.setValue(this.plugin.settings.patch_html_rendering).onChange(patch_html_rendering => {
+            .addToggle((toggle) => {
+                toggle.setValue(this.plugin.settings.patch_html_rendering).onChange((patch_html_rendering) => {
                     this.plugin.settings.patch_html_rendering = patch_html_rendering;
                     if (patch_html_rendering) {
                         patchSanitization();
@@ -61,10 +61,10 @@ export class ReactComponentsSettingTab extends PluginSettingTab {
         new Setting(containerEl)
             .setName('Components folder location')
             .setDesc('Files in this folder will be available as components/functions.')
-            .addText(text => {
+            .addText((text) => {
                 text.setPlaceholder('Example: folder 1/folder 2')
                     .setValue(this.plugin.settings.template_folder)
-                    .onChange(new_folder => {
+                    .onChange((new_folder) => {
                         this.plugin.settings.template_folder = new_folder;
                         this.plugin.loadComponents();
                         this.plugin.saveSettings();
@@ -74,10 +74,10 @@ export class ReactComponentsSettingTab extends PluginSettingTab {
         new Setting(containerEl)
             .setName('Require ')
             .setDesc(
-                'Useful to disable if reloading components is costly (like if they perform api calls or read a lot of files). To refresh the components manually, run the `Refresh React Components` command'
+                'Useful to disable if reloading components is costly (like if they perform api calls or read a lot of files). To refresh the components manually, run the `Refresh React Components` command',
             )
-            .addToggle(toggle => {
-                toggle.setValue(this.plugin.settings.auto_refresh).onChange(auto_refresh => {
+            .addToggle((toggle) => {
+                toggle.setValue(this.plugin.settings.auto_refresh).onChange((auto_refresh) => {
                     this.plugin.settings.auto_refresh = auto_refresh;
                     this.plugin.saveSettings();
                 });
@@ -86,10 +86,10 @@ export class ReactComponentsSettingTab extends PluginSettingTab {
         new Setting(containerEl)
             .setName('Automatically Refresh Components')
             .setDesc(
-                'Useful to disable if reloading components is costly (like if they perform api calls or read a lot of files). To refresh the components manually, run the `Refresh React Components` command'
+                'Useful to disable if reloading components is costly (like if they perform api calls or read a lot of files). To refresh the components manually, run the `Refresh React Components` command',
             )
-            .addToggle(toggle => {
-                toggle.setValue(this.plugin.settings.auto_refresh).onChange(auto_refresh => {
+            .addToggle((toggle) => {
+                toggle.setValue(this.plugin.settings.auto_refresh).onChange((auto_refresh) => {
                     this.plugin.settings.auto_refresh = auto_refresh;
                     this.plugin.saveSettings();
                 });
@@ -98,12 +98,12 @@ export class ReactComponentsSettingTab extends PluginSettingTab {
         new Setting(containerEl)
             .setName('All Files Define Components')
             .setDesc(
-                'If true, the plugin checks for component definitions in all files in the vault. May decrease performance.'
+                'If true, the plugin checks for component definitions in all files in the vault. May decrease performance.',
             )
-            .addToggle(toggle => {
+            .addToggle((toggle) => {
                 toggle
                     .setValue(this.plugin.settings.all_files_define_components)
-                    .onChange(all_files_define_components => {
+                    .onChange((all_files_define_components) => {
                         this.plugin.settings.all_files_define_components = all_files_define_components;
                         this.plugin.saveSettings();
                     });

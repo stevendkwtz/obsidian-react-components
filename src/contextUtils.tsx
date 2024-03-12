@@ -1,10 +1,10 @@
-import {MarkdownPostProcessorContext} from 'obsidian';
+import { MarkdownPostProcessorContext } from 'obsidian';
 import ReactComponentsPlugin from './main';
 
 export function getDocumentAssociatedWithElement(el: HTMLElement) {
     try {
         const file = ((a = []) => {
-            ReactComponentsPlugin.instance.app.workspace.iterateAllLeaves(x => {
+            ReactComponentsPlugin.instance.app.workspace.iterateAllLeaves((x) => {
                 if ((x as any)?.containerEl.contains(el) && x?.view?.file) {
                     a.push(x.view.file);
                 }
@@ -25,7 +25,7 @@ export function getMarkdownPostProcessorContextAssociatedWithElement(el: HTMLEle
             sourcePath: file?.path || '',
             frontmatter: null,
             addChild: null,
-            getSectionInfo: null
+            getSectionInfo: null,
         };
         return context;
     }

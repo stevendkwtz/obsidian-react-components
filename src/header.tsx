@@ -1,13 +1,13 @@
-import {attachComponent} from './componentRendering';
+import { attachComponent } from './componentRendering';
 import ReactComponentsPlugin from './main';
 
-let noteHeaderComponent = any => {
+let noteHeaderComponent = (any) => {
     const React = ReactComponentsPlugin.instance.React;
     return <></>;
 };
 
 export const getNoteHeaderComponent = () => noteHeaderComponent;
-export const setNoteHeaderComponent = newNoteHeaderComponent => {
+export const setNoteHeaderComponent = (newNoteHeaderComponent) => {
     noteHeaderComponent = newNoteHeaderComponent;
 };
 
@@ -32,7 +32,7 @@ export function registerHeaderProcessor() {
             attachComponent(
                 'const HeaderComponent = pluginInternalNoteHeaderComponent; <HeaderComponent/>',
                 container,
-                ctx
+                ctx,
             );
         }
     });

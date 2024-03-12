@@ -1,18 +1,18 @@
-import {MarkdownPostProcessorContext, normalizePath, Plugin, TFile} from 'obsidian';
+import { MarkdownPostProcessorContext, Plugin, TFile, normalizePath } from 'obsidian';
 import OfflineReact from 'react';
 import OfflineReactDOM from 'react-dom';
-import {DEFAULT_SETTINGS, ReactComponentsSettings, ReactComponentsSettingTab} from './settings';
-import {ParentAndChild} from './parentAndChild';
-import {registerCodeProcessor} from './preview';
-import {registerHeaderProcessor} from './header';
-import {unpatchSanitization} from './htmlRendering';
-import {awaitFilesLoaded, getPropertyValue} from './fileUtils';
-import {clearComponentNamespace, NamespaceObject} from './namespaces';
-import {importFromUrl} from './urlImport';
-import {registerComponents} from './componentRegistry';
-import {requestComponentUpdate, setupComponentRendering, unloadComponentRendering} from './componentRendering';
-import {refreshComponentScope} from './scope';
-import {ReactComponentContextData} from './reactComponentContext';
+import { DEFAULT_SETTINGS, ReactComponentsSettingTab, ReactComponentsSettings } from './settings';
+import { ParentAndChild } from './parentAndChild';
+import { registerCodeProcessor } from './preview';
+import { registerHeaderProcessor } from './header';
+import { unpatchSanitization } from './htmlRendering';
+import { awaitFilesLoaded, getPropertyValue } from './fileUtils';
+import { NamespaceObject, clearComponentNamespace } from './namespaces';
+import { importFromUrl } from './urlImport';
+import { registerComponents } from './componentRegistry';
+import { requestComponentUpdate, setupComponentRendering, unloadComponentRendering } from './componentRendering';
+import { refreshComponentScope } from './scope';
+import { ReactComponentContextData } from './reactComponentContext';
 
 export default class ReactComponentsPlugin extends Plugin {
     static instance: ReactComponentsPlugin = null;
@@ -28,7 +28,7 @@ export default class ReactComponentsPlugin extends Plugin {
     reactRoot: HTMLDivElement;
     addComponentToRender: (
         component: () => OfflineReact.FunctionComponentElement<any>,
-        parentAndChild: ParentAndChild
+        parentAndChild: ParentAndChild,
     ) => void;
     cleanUpComponents: () => void;
     removeComponentAtElement: (el: Element) => void;
@@ -36,7 +36,7 @@ export default class ReactComponentsPlugin extends Plugin {
     elementJsxElemMap: WeakMap<HTMLElement, OfflineReact.FunctionComponentElement<any>>;
     elementJsxFuncMap: WeakMap<HTMLElement, () => OfflineReact.FunctionComponentElement<any>>;
     mutationObserver: MutationObserver;
-    componentsWaitingToLoad: Map<string, string>; // dom ids for all containers to which react should render. 
+    componentsWaitingToLoad: Map<string, string>; // dom ids for all containers to which react should render.
 
     async setupReact() {
         try {
@@ -61,6 +61,9 @@ export default class ReactComponentsPlugin extends Plugin {
             await refreshComponentScope();
             await requestComponentUpdate();
         } catch (e) {
+            // eslint-disable-next-line no-console
+            console.log('obsidian-react-components: Error in main loadComponents. See error below.');
+            console.error(e);
         }
     }
 
@@ -73,11 +76,11 @@ export default class ReactComponentsPlugin extends Plugin {
 
         await setupComponentRendering();
 
-        const registerIfCodeBlockFile = file => {
+        const registerIfCodeBlockFile = (file) => {
             if (
                 file instanceof TFile &&
                 ((this.settings.template_folder != '' &&
-                        file.parent.path.startsWith(normalizePath(this.settings.template_folder))) ||
+                    file.parent.path.startsWith(normalizePath(this.settings.template_folder))) ||
                     this.settings.all_files_define_components ||
                     getPropertyValue('defines-react-components', file))
             ) {
@@ -93,7 +96,7 @@ export default class ReactComponentsPlugin extends Plugin {
         this.registerEvent(
             this.app.metadataCache.on('dataview:metadata-change', (...args) => {
                 registerIfCodeBlockFile(args[1]);
-            })
+            }),
         );
         await this.loadComponents();
 
@@ -104,14 +107,14 @@ export default class ReactComponentsPlugin extends Plugin {
                 clearComponentNamespace();
                 await this.loadComponents();
                 requestComponentUpdate();
-            }
+            },
         });
         this.addCommand({
             id: 'cleanup-react-components',
             name: 'Clean Up React Components',
             callback: async () => {
                 this.cleanUpComponents?.();
-            }
+            },
         });
         this.addSettingTab(new ReactComponentsSettingTab(this));
         registerCodeProcessor();

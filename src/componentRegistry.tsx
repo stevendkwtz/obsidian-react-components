@@ -1,23 +1,23 @@
-import {normalizePath, Notice, TFile} from 'obsidian';
-import {CodeBlockSymbol, GLOBAL_NAMESPACE} from './constants';
-import {getPropertyValue} from './fileUtils';
-import ReactComponentsPlugin from './main';
-import {getMatches} from './regex_utils';
+import { Notice, TFile, normalizePath } from 'obsidian';
 import isVarName from 'is-var-name';
-import {getNamespaceObject} from './namespaces';
-import {evalAdapter} from './codeEvaluation';
-import {transpileCode} from './codeTranspliation';
-import {ErrorComponent} from './components/ErrorComponent';
-import {getNoteHeaderComponent, setNoteHeaderComponent} from './header';
-import {removeFrontMatter, wrapCode} from './codePostProcessing';
-import {refreshComponentScope} from './scope';
-import {requestComponentUpdate} from './componentRendering';
+import { CodeBlockSymbol, GLOBAL_NAMESPACE } from './constants';
+import { getPropertyValue } from './fileUtils';
+import ReactComponentsPlugin from './main';
+import { getMatches } from './regex_utils';
+import { getNamespaceObject } from './namespaces';
+import { evalAdapter } from './codeEvaluation';
+import { transpileCode } from './codeTranspliation';
+import { ErrorComponent } from './components/ErrorComponent';
+import { getNoteHeaderComponent, setNoteHeaderComponent } from './header';
+import { removeFrontMatter, wrapCode } from './codePostProcessing';
+import { refreshComponentScope } from './scope';
+import { requestComponentUpdate } from './componentRendering';
 
 export async function registerComponent(
     content: string,
     componentName: string,
     componentNamespace,
-    suppressComponentRefresh
+    suppressComponentRefresh,
 ) {
     const code = () => wrapCode(content, componentNamespace);
 
@@ -34,10 +34,10 @@ export async function registerComponent(
     try {
         namespaceObject[componentName] = await evalAdapter(
             transpileCode(namespaceObject[CodeBlockSymbol].get(componentName)()),
-            componentNamespace
+            componentNamespace,
         );
     } catch (e) {
-        namespaceObject[componentName] = () => ErrorComponent({componentName, error: e});
+        namespaceObject[componentName] = () => ErrorComponent({ componentName, error: e });
     }
 }
 
@@ -61,7 +61,7 @@ export async function registerCodeBlockComponents(file: TFile, suppressComponent
     const matches = getMatches(/^\s*?```jsx:component:(.*)\r?\n((.|\r?\n)*?)\r?\n^\s*?```$/gm, content);
 
     for (const match of matches) {
-        const [componentName] = match[1].split(':').map(x => x.trim());
+        const [componentName] = match[1].split(':').map((x) => x.trim());
         if (!isVarName(componentName)) continue;
         const componentCode = match[2];
         await registerComponent(componentCode, componentName, nameSpace, suppressComponentRefresh);

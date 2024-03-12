@@ -1,4 +1,4 @@
-import {MarkdownPostProcessorContext} from 'obsidian';
+import { MarkdownPostProcessorContext } from 'obsidian';
 
 export type ReactComponentContextData = {
     markdownPostProcessorContext: MarkdownPostProcessorContext;
@@ -6,6 +6,6 @@ export type ReactComponentContextData = {
 
 export function generateReactComponentContext(ctx: MarkdownPostProcessorContext): ReactComponentContextData {
     return {
-        markdownPostProcessorContext: ctx
+        markdownPostProcessorContext: ctx,
     };
 }

@@ -1,9 +1,9 @@
-import {getScopeExpression} from './scope';
+import { getScopeExpression } from './scope';
 
 export function wrapCode(content: string, namespace: string) {
     const importsRegexp = /^\s*import\s(.|\s)*?\sfrom\s.*?$/gm;
     const imports = [];
-    content = content.replaceAll(importsRegexp, match => {
+    content = content.replaceAll(importsRegexp, (match) => {
         imports.push(match.trim());
         return '';
     });
@@ -13,12 +13,12 @@ export function wrapCode(content: string, namespace: string) {
 export function wrapInNoteCode(content: string, namespace: string) {
     const importsRegexp = /^\s*import\s(.|\s)*?\sfrom\s.*?$/gm;
     const imports = [];
-    content = content.replaceAll(importsRegexp, match => {
+    content = content.replaceAll(importsRegexp, (match) => {
         imports.push(match.trim());
         return '';
     });
     return `${imports.join('\n')}\nexport default (scope, transpile)=>{\n${getScopeExpression(
-        namespace
+        namespace,
     )}\n return eval(transpile(JSON.parse(${JSON.stringify(JSON.stringify(content))})))}`;
 }
 
